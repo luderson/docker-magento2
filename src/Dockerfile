@@ -24,7 +24,6 @@ RUN apt-get update \
   && apt-get install -y \
     <?php echo join(" \\ \n    ", $packages) ?>
 
-
 # Configure the gd library
 RUN docker-php-ext-configure \
   gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
@@ -51,8 +50,8 @@ RUN docker-php-ext-install \
 <?php $xdebugVersion = ($xdebugVersion == 'latest' || $xdebugVersion == '') ? '' : '-' . $xdebugVersion; ?>
 RUN pecl install -o -f <?php printf("xdebug%s\n", $xdebugVersion) ?>
 
-ENV PHP_MEMORY_LIMIT 2G
-ENV PHP_ENABLE_XDEBUG false
+ENV PHP_MEMORY_LIMIT <?php printf("%s\n", $php_memory_limit ?: '2048M')?>
+ENV PHP_ENABLE_XDEBUG <?php printf("%s\n", $php_enable_xdebug ?: 0)?>
 ENV MAGENTO_ROOT /var/www/magento
 
 ENV DEBUG false
