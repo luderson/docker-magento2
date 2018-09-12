@@ -3,7 +3,8 @@ $imageSpecificPackages = [
     'cron',
     'rsyslog',
     'mysql-client',
-    'git'
+    'git',
+    'gnupg'
 ];
 
 include "Dockerfile";
@@ -31,6 +32,10 @@ RUN curl -LO https://s3.eu-west-2.amazonaws.com/magedbm2-releases/magedbm2.phar 
 
 # Install mageconfigsync and move to /usr/local/bin
 RUN curl -L https://github.com/punkstar/mageconfigsync/releases/download/0.5.0-beta.1/mageconfigsync-0.5.0-beta.1.phar > mageconfigsync.phar && chmod +x ./mageconfigsync.phar && mv ./mageconfigsync.phar /usr/local/bin
+
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+    apt-get install -y nodejs
 
 ADD bin/* /usr/local/bin/
 
